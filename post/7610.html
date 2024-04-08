@@ -1,0 +1,176 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>volatile 关键字(C/Java) | Yue Siyuan's Blog</title><meta name="author" content="Yue Siyuan"><meta name="copyright" content="Yue Siyuan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在 C 和 Java 中，都有与并发编程相关的关键字 volatile，但在两种语言中的含义和用法略有不同。 在 C 中：  在 C 中，volatile 是一个关键字，用于告诉编译器该变量的值可能会在程序的控制之外被修改，因此编译器不应该对该变量的访问进行优化。 volatile 变量在多线程或中断处理 等情况下非常有用，因为它告诉编译器不要对该变量进行优化，以避免出现意外的行为。 当一个变量被">
+<meta property="og:type" content="article">
+<meta property="og:title" content="volatile 关键字(C&#x2F;Java)">
+<meta property="og:url" content="http://siyuanyue.github.io/post/7610.html">
+<meta property="og:site_name" content="Yue Siyuan&#39;s Blog">
+<meta property="og:description" content="在 C 和 Java 中，都有与并发编程相关的关键字 volatile，但在两种语言中的含义和用法略有不同。 在 C 中：  在 C 中，volatile 是一个关键字，用于告诉编译器该变量的值可能会在程序的控制之外被修改，因此编译器不应该对该变量的访问进行优化。 volatile 变量在多线程或中断处理 等情况下非常有用，因为它告诉编译器不要对该变量进行优化，以避免出现意外的行为。 当一个变量被">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://siyuanyue.github.io/img/panda.jpg">
+<meta property="article:published_time" content="2024-04-08T18:28:47.000Z">
+<meta property="article:modified_time" content="2024-04-08T18:29:27.354Z">
+<meta property="article:author" content="Yue Siyuan">
+<meta property="article:tag" content="OS,C,Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://siyuanyue.github.io/img/panda.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://siyuanyue.github.io/post/7610.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'volatile 关键字(C/Java)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-04-09 02:29:27'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/panda.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Yue Siyuan's Blog"><img class="site-icon" src="/img/panda.jpg"/><span class="site-name">Yue Siyuan's Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">volatile 关键字(C/Java)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-04-08T18:28:47.000Z" title="发表于 2024-04-09 02:28:47">2024-04-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-08T18:29:27.354Z" title="更新于 2024-04-09 02:29:27">2024-04-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="volatile 关键字(C/Java)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>在 C 和 Java 中，都有与并发编程相关的关键字 volatile，但在两种语言中的含义和用法略有不同。</p>
+<p><strong>在 C 中：</strong></p>
+<ul>
+<li>在 C 中，volatile 是一个关键字，<em>用于告诉编译器该变量的值可能会在程序的控制之外被修改</em>，因此编译器不应该对该变量的访问进行优化。</li>
+<li>volatile 变量在多线程或<em>中断处理</em> 等情况下非常有用，因为它告诉编译器不要对该变量进行优化，以避免出现意外的行为。</li>
+<li>当一个变量被声明为 volatile 时，<em>每次对该变量的访问都会从内存中读取最新的值，而不是使用缓存的值</em>。</li>
+</ul>
+<p><strong>在 Java 中：</strong></p>
+<ul>
+<li>在 Java 中，volatile 是一个关键字，<em>用于声明变量的值可能会被多个线程同时修改</em>，因此应该确保对该变量的访问是<em>线程安全</em>的。</li>
+<li>使用 volatile 关键字修饰的变量会<em>禁止线程将该变量缓存在线程的工作内存中</em>，而是<em>直接从主内存中读取和写入该变量的值</em>。</li>
+<li>在 Java 中，volatile 变量通常用于标记状态变量或标志，以<em>确保多个线程之间对该变量的访问是可见的</em>。</li>
+</ul>
+<p><strong>区别：</strong></p>
+<ol>
+<li><strong>含义不同：</strong> 在 C 中，volatile 用于告诉<em>编译器变量可能会在程序控制之外被修改</em>；在 Java 中，volatile 用于<em>标记变量可能被多个线程同时修改</em>。</li>
+<li><strong>用途不同：</strong> C 中的 volatile 主要用于处理<em>硬件相关</em>的情况，如<strong>中断处理</strong>；而 Java 中的 volatile 主要用于实现<em>线程之间的可见性和有序性</em>。</li>
+<li><strong>实现方式不同：</strong> 在 C 中，volatile 变量的访问会从内存中读取最新值，而在 Java 中，volatile 变量的值会直接从主内存读取，不会被缓存在线程的工作内存中。</li>
+</ol>
+<p>总的来说，虽然 C 和 Java 中都有 volatile 关键字，但在语义和用法上有一些区别，主要取决于语言本身的特性和用途。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://SiyuanYue.github.io">Yue Siyuan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://siyuanyue.github.io/post/7610.html">http://siyuanyue.github.io/post/7610.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://SiyuanYue.github.io" target="_blank">Yue Siyuan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/OS-C-Java/">OS,C,Java</a></div><div class="post_share"><div class="social-share" data-image="/img/panda.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/9322.html" title="接入nvboard报错 ‘TTF_SetFontSize’ was not declared in this scope 解决&amp; SDL2库编译安装"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">接入nvboard报错 ‘TTF_SetFontSize’ was not declared in this scope 解决&amp; SDL2库编译安装</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/panda.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Yue Siyuan</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/SiyuanYue"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/post/7610.html" title="volatile 关键字(C/Java)">volatile 关键字(C/Java)</a><time datetime="2024-04-08T18:28:47.000Z" title="发表于 2024-04-09 02:28:47">2024-04-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/post/9322.html" title="接入nvboard报错 ‘TTF_SetFontSize’ was not declared in this scope 解决&amp; SDL2库编译安装">接入nvboard报错 ‘TTF_SetFontSize’ was not declared in this scope 解决&amp; SDL2库编译安装</a><time datetime="2024-04-08T13:34:48.000Z" title="发表于 2024-04-08 21:34:48">2024-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/post/undefined.html" title="Hello World">Hello World</a><time datetime="2024-04-08T12:14:31.734Z" title="发表于 2024-04-08 20:14:31">2024-04-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Yue Siyuan</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
